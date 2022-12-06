@@ -1,12 +1,13 @@
 package fr.gsb.gsbrvdr;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Praticien {
     protected String numero;
     protected String nom;
     protected String prenom;
-    protected Double coefNotoriete = null;
+    protected Double coefNotoriete;
     protected LocalDate dateDerniereVisite;
     protected int dernierCoefConfiance;
 
@@ -17,7 +18,7 @@ public class Praticien {
         this.numero = numero;
         this.nom = nom;
         this.prenom = prenom;
-        this.coefNotoriete = coefNotoriete = null;
+        this.coefNotoriete = coefNotoriete;
         this.dateDerniereVisite = dateDerniereVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
@@ -74,4 +75,15 @@ public class Praticien {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
 
+    @Override
+    public String toString() {
+        return "Praticien{" +
+                "numero='" + numero + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", coefNotoriete=" + coefNotoriete +
+                ", dateDerniereVisite=" + dateDerniereVisite +
+                ", dernierCoefConfiance=" + dernierCoefConfiance +
+                '}';
+    }
 }

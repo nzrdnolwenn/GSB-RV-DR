@@ -18,6 +18,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,11 +66,20 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        List<Praticien> praticiens = ModeleGsbRv.getPraticienHesitants();
+
+        List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+
+        //Collections.sort( praticiens, new ComparateurCoefConfiance());
+
+        Collections.sort( praticiens, new ComparateurCoefNotoriete());
 
         for ( Praticien unPraticien : praticiens ){
-            System.out.println( unPraticien );
+            System.out.println( unPraticien.toString() );
         }
+
+
+
+
 
 
 
@@ -150,12 +160,5 @@ public class HelloApplication extends Application {
             throw new RuntimeException(e);
         }
         launch();
-
-        List<Praticien> praticiens = ModeleGsbRv.getPraticienHesitants();
-
-        for ( Praticien unPraticien : praticiens ){
-            System.out.println( unPraticien );
-        }
-
     }
 }

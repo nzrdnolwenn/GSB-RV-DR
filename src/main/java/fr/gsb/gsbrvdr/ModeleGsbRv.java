@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModeleGsbRv {
@@ -46,11 +47,12 @@ public class ModeleGsbRv {
         } 
     }
 
-    public static List<Praticien> getPraticienHesitants() throws ConnexionException {
 
+    public static List<Praticien> getPraticiensHesitants() throws ConnexionException {
+        List<Praticien> praticiens = new ArrayList<>();
         Connection connexion = ConnexionBD.getConnexion() ;
 
-        String requete = "SELECT P.pra_num, P.pra_nom, P.pra_prenom, R.rap_coef_confiance "
+        String requete = "SELECT P.pra_num, P.pra_nom, P.pra_prenom, P.pra_coefnotoriete, R.rap_coef_confiance "
                 + "FROM Praticien AS P "
                 + "INNER JOIN RapportVisite AS R ON R.pra_num = P.pra_num "
                 + "WHERE rap_coef_confiance < 3 " ;
@@ -59,14 +61,19 @@ public class ModeleGsbRv {
             PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
             ResultSet resultat = requetePreparee.executeQuery() ;
             while ( resultat.next() ){
-                Praticien praticien = new Praticien( resultat.getString("P.pra_num"), resultat.getString("P.pra_nom"),
-                        resultat.getString("P.pra_prenom"), null,
-                        LocalDateTime.now().toLocalDate(), resultat.getInt("R.rap_coef_confiance"));
-                System.out.println(resultat);
+                praticiens.add( new Praticien(
+                        resultat.getString("P.pra_num"),
+                        resultat.getString("P.pra_nom"),
+                        resultat.getString("P.pra_prenom"),
+                        resultat.getDouble("P.pra_coefnotoriete"),
+                        LocalDateTime.now().toLocalDate(),
+                        resultat.getInt("R.rap_coef_confiance")));
                 requetePreparee.close() ;
-                return (List<Praticien>) praticien;
             }
 
+            if (!praticiens.isEmpty()) {
+                return praticiens;
+            }
             return null;
         }
         catch( Exception e){
