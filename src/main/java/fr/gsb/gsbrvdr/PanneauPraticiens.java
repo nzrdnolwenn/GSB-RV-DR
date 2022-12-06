@@ -1,7 +1,10 @@
 package fr.gsb.gsbrvdr;
 
+import com.sun.javafx.menu.MenuItemBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,12 +14,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PanneauPraticiens extends Parent {
 
     public PanneauPraticiens() {
         super();
+        
     }
 
     public static Node addVbox() throws ConnexionException {
@@ -50,8 +55,6 @@ public class PanneauPraticiens extends Parent {
 
         radioButton.getChildren().add(gridPane);
 
-
-
         TableView<Praticien> tabPraticiens = new TableView<>();
         TableColumn<Praticien, Integer> colNumero = new TableColumn<Praticien, Integer>("Numéro");
         TableColumn<Praticien, String> colNom = new TableColumn<Praticien, String>("Nom");
@@ -69,15 +72,25 @@ public class PanneauPraticiens extends Parent {
         List<Praticien> list = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
         tabPraticiens.setItems((ObservableList<Praticien>) list);
 
-
-
-
-
-
         vuePraticiens.getChildren().addAll(titre, radioButton, tabPraticiens);
+
+
+
         return vuePraticiens;
     }
-    public void rafraichir(){
+    public void rafraichir() throws ConnexionException {
+        ObservableList<Praticien> praticiens = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
+        if (getCritereTri() == "coefConfiance"){
+            praticiens.sort(new ComparateurCoefConfiance());
+        }
+        else if (getCritereTri() == "coefNotoriete"){
+            praticiens.sort(new ComparateurCoefNotoriete());
+            Collections.reverse(praticiens);
+        }
+        else if (getCritereTri() == "coefDateVisite"){
+            praticiens.sort(new ComparateurDateVisite());
+            Collections.reverse(praticiens);
+        }
     }
 
     public String getCritereTri(){
