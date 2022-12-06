@@ -6,19 +6,24 @@ public class Praticien {
     protected String numero;
     protected String nom;
     protected String prenom;
-    protected Double coefNotoriete;
+    protected Double coefNotoriete = null;
     protected LocalDate dateDerniereVisite;
     protected int dernierCoefConfiance;
 
     public Praticien(String numero, String nom, String prenom, Double coefNotoriete,
                      LocalDate dateDerniereVisite, int dernierCoefConfiance) {
 
+        super();
         this.numero = numero;
         this.nom = nom;
         this.prenom = prenom;
-        this.coefNotoriete = coefNotoriete;
+        this.coefNotoriete = coefNotoriete = null;
         this.dateDerniereVisite = dateDerniereVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
+    }
+
+    public Praticien (){
+
     }
 
     public String getNumero() {
@@ -68,4 +73,5 @@ public class Praticien {
     public void setDernierCoefConfiance(int dernierCoefConfiance) {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
+
 }

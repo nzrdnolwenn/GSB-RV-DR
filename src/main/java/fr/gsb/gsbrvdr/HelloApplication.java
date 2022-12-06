@@ -18,11 +18,12 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, ConnexionException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
         // Variable de session fermée
@@ -63,6 +64,12 @@ public class HelloApplication extends Application {
         stage.setTitle("GSB-RV-DR");
         stage.setScene(scene);
         stage.show();
+
+        List<Praticien> praticiens = ModeleGsbRv.getPraticienHesitants();
+
+        for ( Praticien unPraticien : praticiens ){
+            System.out.println( unPraticien );
+        }
 
 
 
@@ -134,7 +141,7 @@ public class HelloApplication extends Application {
         System.out.println(session1);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ConnexionException {
         try {
             ConnexionBD.getConnexion();
             ModeleGsbRv.seConnecter("1", "azerty");
@@ -143,6 +150,12 @@ public class HelloApplication extends Application {
             throw new RuntimeException(e);
         }
         launch();
+
+        List<Praticien> praticiens = ModeleGsbRv.getPraticienHesitants();
+
+        for ( Praticien unPraticien : praticiens ){
+            System.out.println( unPraticien );
+        }
 
     }
 }
