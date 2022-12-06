@@ -57,7 +57,7 @@ public class HelloApplication extends Application {
 
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(barreMenus);
-        borderPane.setLeft(PanneauAcceuil.addVbox());
+        borderPane.setCenter(PanneauAcceuil.addVbox());
         borderPane.setStyle("-fx-background-color : white");
         // Mise en place de la scène --------------------
 
@@ -71,15 +71,13 @@ public class HelloApplication extends Application {
 
         //Collections.sort( praticiens, new ComparateurCoefConfiance());
 
-        Collections.sort( praticiens, new ComparateurCoefNotoriete());
+        //Collections.sort( praticiens, new ComparateurCoefNotoriete());
+
+        Collections.sort( praticiens, new ComparateurDateVisite());
 
         for ( Praticien unPraticien : praticiens ){
             System.out.println( unPraticien.toString() );
         }
-
-
-
-
 
 
 
@@ -135,7 +133,7 @@ public class HelloApplication extends Application {
                 new EventHandler<ActionEvent>(){
                     @Override
                     public void handle( ActionEvent event ){
-                        borderPane.setLeft(PanneauRapports.addVbox());
+                        borderPane.setCenter(PanneauRapports.addVbox());
                     }
                 }
         );
@@ -144,7 +142,11 @@ public class HelloApplication extends Application {
                 new EventHandler<ActionEvent>(){
                     @Override
                     public void handle( ActionEvent event ){
-                        borderPane.setLeft(PanneauPraticiens.addVbox());
+                        try {
+                            borderPane.setCenter(PanneauPraticiens.addVbox());
+                        } catch (ConnexionException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
         );

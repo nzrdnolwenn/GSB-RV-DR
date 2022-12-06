@@ -7,17 +7,19 @@ public class Praticien {
     protected String numero;
     protected String nom;
     protected String prenom;
+    protected String ville;
     protected Double coefNotoriete;
     protected LocalDate dateDerniereVisite;
     protected int dernierCoefConfiance;
 
-    public Praticien(String numero, String nom, String prenom, Double coefNotoriete,
+    public Praticien(String numero, String nom, String prenom, String ville, Double coefNotoriete,
                      LocalDate dateDerniereVisite, int dernierCoefConfiance) {
 
         super();
         this.numero = numero;
         this.nom = nom;
         this.prenom = prenom;
+        this.ville = ville;
         this.coefNotoriete = coefNotoriete;
         this.dateDerniereVisite = dateDerniereVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
@@ -51,6 +53,14 @@ public class Praticien {
         this.prenom = prenom;
     }
 
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
     public Double getCoefNotoriete() {
         return coefNotoriete;
     }
@@ -81,6 +91,7 @@ public class Praticien {
                 "numero='" + numero + '\'' +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
+                ", ville='" + ville + '\'' +
                 ", coefNotoriete=" + coefNotoriete +
                 ", dateDerniereVisite=" + dateDerniereVisite +
                 ", dernierCoefConfiance=" + dernierCoefConfiance +

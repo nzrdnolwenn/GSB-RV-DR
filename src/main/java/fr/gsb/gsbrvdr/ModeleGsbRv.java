@@ -52,7 +52,7 @@ public class ModeleGsbRv {
         List<Praticien> praticiens = new ArrayList<>();
         Connection connexion = ConnexionBD.getConnexion() ;
 
-        String requete = "SELECT P.pra_num, P.pra_nom, P.pra_prenom, P.pra_coefnotoriete, R.rap_coef_confiance "
+        String requete = "SELECT P.pra_num, P.pra_nom, P.pra_prenom, P.pra_ville, P.pra_coefnotoriete, R.rap_coef_confiance "
                 + "FROM Praticien AS P "
                 + "INNER JOIN RapportVisite AS R ON R.pra_num = P.pra_num "
                 + "WHERE rap_coef_confiance < 3 " ;
@@ -65,6 +65,7 @@ public class ModeleGsbRv {
                         resultat.getString("P.pra_num"),
                         resultat.getString("P.pra_nom"),
                         resultat.getString("P.pra_prenom"),
+                        resultat.getString("P.pra_ville"),
                         resultat.getDouble("P.pra_coefnotoriete"),
                         LocalDateTime.now().toLocalDate(),
                         resultat.getInt("R.rap_coef_confiance")));
