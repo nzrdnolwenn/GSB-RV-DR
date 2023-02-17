@@ -147,38 +147,6 @@ public class PanneauPraticiens extends Parent {
         );
         return vuePraticiens;
     }
-    public static void rafraichir() throws ConnexionException {
-        ObservableList<Praticien> praticiens = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
-        if (getCritereTri() == 1){
-            TableView<Praticien> tabPraticiens = new TableView<>();
-            TableColumn<Praticien, Integer> colNumero = new TableColumn<Praticien, Integer>("Numéro");
-            TableColumn<Praticien, String> colNom = new TableColumn<Praticien, String>("Nom");
-            TableColumn<Praticien, String> colVille = new TableColumn<Praticien, String>("Ville");
-
-            colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-            colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-            colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
-
-            tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-            tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
-            Collections.sort(praticiens, new ComparateurCoefConfiance());
-            setCritereTri(CRITERE_COEF_CONFIANCE);
-        }
-        else if (getCritereTri() == 2){
-            praticiens.clear();
-            Collections.sort(praticiens, new ComparateurCoefNotoriete());
-            Collections.reverse(praticiens);
-            setCritereTri(CRITERE_COEF_NOTORIETE);
-        }
-        else if (getCritereTri() == 3){
-            praticiens.clear();
-            Collections.sort(praticiens, new ComparateurDateVisite());
-            Collections.reverse(praticiens);
-            setCritereTri(CRITERE_DATE_VISITE);
-        }
-    }
-
     public static void setCritereTri(int critereTri){
         critereTri = critereTri;
     }
