@@ -13,45 +13,52 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextFlow;
+import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
 
 public class PanneauPraticiens extends Parent {
 
+    protected static int CRITERE_COEF_CONFIANCE = 1;
+    protected static int CRITERE_COEF_NOTORIETE = 2;
+    protected static int CRITERE_DATE_VISITE = 3;
+
+    protected static int critereTri = CRITERE_COEF_CONFIANCE;
+
     public PanneauPraticiens() {
         super();
-        
     }
 
     public static Node addVbox() throws ConnexionException {
         VBox vuePraticiens = new VBox(15);
         vuePraticiens.setPadding(new Insets(15, 5, 5, 5));
         Label titre = new Label("Sélectionner un critère de tri :");
-        titre.setStyle("-fx-font-weight : bold");
+        titre.setFont(Font.font(18));
+        titre.setStyle("-fx-font-weight : bold;");
 
         vuePraticiens.setStyle("-fx-background-color : white");
 
-        String critereTri = "coefConfiance";
-
         ToggleGroup boutons = new ToggleGroup();
-        RadioButton coefConfiance = new RadioButton("Confiance");
-        coefConfiance.setToggleGroup(boutons);
-        coefConfiance.setSelected(true);
+        RadioButton rbCoefConfiance = new RadioButton("Confiance");
+        rbCoefConfiance.setToggleGroup(boutons);
+        rbCoefConfiance.setSelected(true);
 
-        RadioButton coefNotoriete = new RadioButton("Notoriété");
-        coefNotoriete.setToggleGroup(boutons);
+        RadioButton rbCoefNotoriete = new RadioButton("Notoriété");
+        rbCoefNotoriete.setToggleGroup(boutons);
 
-        RadioButton coefDateVisite = new RadioButton("Date visite");
-        coefDateVisite.setToggleGroup(boutons);
+        RadioButton rbCoefDateVisite = new RadioButton("Date visite");
+        rbCoefDateVisite.setToggleGroup(boutons);
 
-        HBox radioButton = new HBox(coefConfiance, coefNotoriete, coefDateVisite);
+        HBox radioButton = new HBox(rbCoefConfiance, rbCoefNotoriete, rbCoefDateVisite);
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.addRow(0, coefConfiance);
-        gridPane.addRow(1, coefNotoriete);
-        gridPane.addRow(2, coefDateVisite);
+        gridPane.addRow(0, rbCoefConfiance);
+        gridPane.addRow(1, rbCoefNotoriete);
+        gridPane.addRow(2, rbCoefDateVisite);
 
         radioButton.getChildren().add(gridPane);
 
@@ -66,7 +73,6 @@ public class PanneauPraticiens extends Parent {
 
         tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-
         tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
 
         List<Praticien> list = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
@@ -74,28 +80,75 @@ public class PanneauPraticiens extends Parent {
 
         vuePraticiens.getChildren().addAll(titre, radioButton, tabPraticiens);
 
+        rbCoefConfiance.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        setCritereTri(CRITERE_COEF_CONFIANCE);
+                        try {
+                            rafraichir();
+                        } catch (ConnexionException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+        );
 
+        rbCoefNotoriete.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        setCritereTri(CRITERE_COEF_NOTORIETE);
+                        try {
+                            rafraichir();
+                        } catch (ConnexionException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+        );
 
+        rbCoefDateVisite.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        setCritereTri(CRITERE_DATE_VISITE);
+                        try {
+                            rafraichir();
+                        } catch (ConnexionException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+        );
         return vuePraticiens;
     }
-    public void rafraichir() throws ConnexionException {
+    public static void rafraichir() throws ConnexionException {
         ObservableList<Praticien> praticiens = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
-        if (getCritereTri() == "coefConfiance"){
+        if (getCritereTri() == CRITERE_COEF_CONFIANCE){
+            praticiens.clear();
             praticiens.sort(new ComparateurCoefConfiance());
+            setCritereTri(CRITERE_COEF_CONFIANCE);
         }
-        else if (getCritereTri() == "coefNotoriete"){
+        else if (getCritereTri() == CRITERE_COEF_NOTORIETE){
+            praticiens.clear();
             praticiens.sort(new ComparateurCoefNotoriete());
             Collections.reverse(praticiens);
+            setCritereTri(CRITERE_COEF_NOTORIETE);
         }
-        else if (getCritereTri() == "coefDateVisite"){
+        else if (getCritereTri() == CRITERE_DATE_VISITE){
+            praticiens.clear();
             praticiens.sort(new ComparateurDateVisite());
             Collections.reverse(praticiens);
+            setCritereTri(CRITERE_DATE_VISITE);
         }
     }
 
-    public String getCritereTri(){
-        String critereTri = "coefConfiance";
+    public static void setCritereTri(int critereTri){
+        critereTri = critereTri;
+    }
 
+    public static int getCritereTri(){
         return critereTri;
     }
 }

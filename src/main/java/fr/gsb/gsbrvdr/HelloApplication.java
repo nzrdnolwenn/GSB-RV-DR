@@ -107,7 +107,6 @@ public class HelloApplication extends Application {
                 new EventHandler<ActionEvent>(){
                     @Override
                     public void handle( ActionEvent event ){
-                        session1.setEtatSession(true);
                         try {
                             VueConnexion vue = new VueConnexion();
                         } catch (ConnexionException e) {
@@ -156,7 +155,6 @@ public class HelloApplication extends Application {
     public static void main(String[] args) throws ConnexionException {
         try {
             ConnexionBD.getConnexion();
-            ModeleGsbRv.seConnecter("1", "azerty");
         } catch (ConnexionException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
