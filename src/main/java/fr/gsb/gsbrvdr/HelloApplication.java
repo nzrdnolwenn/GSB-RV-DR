@@ -73,11 +73,11 @@ public class HelloApplication extends Application {
 
         //Collections.sort( praticiens, new ComparateurCoefNotoriete());
 
-        Collections.sort( praticiens, new ComparateurDateVisite());
+        //Collections.sort( praticiens, new ComparateurDateVisite());
 
-        for ( Praticien unPraticien : praticiens ){
+        /*for ( Praticien unPraticien : praticiens ){
             System.out.println( unPraticien.toString() );
-        }
+        }*/
 
 
 
@@ -112,6 +112,7 @@ public class HelloApplication extends Application {
                         } catch (ConnexionException e) {
                             throw new RuntimeException(e);
                         }
+                        session1.setEtatSession(false);
                         System.out.println(session1);
                     }
                 }

@@ -75,7 +75,10 @@ public class PanneauPraticiens extends Parent {
 
         tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
 
-        List<Praticien> list = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
+        List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+        Collections.sort(praticiens, new ComparateurCoefConfiance());
+
+        List<Praticien> list = FXCollections.observableArrayList(praticiens);
         tabPraticiens.setItems((ObservableList<Praticien>) list);
 
         vuePraticiens.getChildren().addAll(titre, radioButton, tabPraticiens);
@@ -84,9 +87,16 @@ public class PanneauPraticiens extends Parent {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        setCritereTri(CRITERE_COEF_CONFIANCE);
                         try {
-                            rafraichir();
+                            tabPraticiens.refresh();
+                            setCritereTri(CRITERE_COEF_CONFIANCE);
+
+                            List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+                            Collections.sort(praticiens, new ComparateurCoefConfiance());
+
+                            List<Praticien> list = FXCollections.observableArrayList(praticiens);
+                            tabPraticiens.setItems((ObservableList<Praticien>) list);
+
                         } catch (ConnexionException e) {
                             throw new RuntimeException(e);
                         }
@@ -98,9 +108,16 @@ public class PanneauPraticiens extends Parent {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        setCritereTri(CRITERE_COEF_NOTORIETE);
                         try {
-                            rafraichir();
+                            tabPraticiens.refresh();
+                            setCritereTri(CRITERE_COEF_NOTORIETE);
+
+                            List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+                            Collections.sort(praticiens, new ComparateurCoefNotoriete());
+
+                            List<Praticien> list = FXCollections.observableArrayList(praticiens);
+                            tabPraticiens.setItems((ObservableList<Praticien>) list);
+
                         } catch (ConnexionException e) {
                             throw new RuntimeException(e);
                         }
@@ -112,9 +129,16 @@ public class PanneauPraticiens extends Parent {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        setCritereTri(CRITERE_DATE_VISITE);
                         try {
-                            rafraichir();
+                            tabPraticiens.refresh();
+                            setCritereTri(CRITERE_DATE_VISITE);
+
+                            List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+                            Collections.sort(praticiens, new ComparateurDateVisite());
+
+                            List<Praticien> list = FXCollections.observableArrayList(praticiens);
+                            tabPraticiens.setItems((ObservableList<Praticien>) list);
+
                         } catch (ConnexionException e) {
                             throw new RuntimeException(e);
                         }
@@ -125,20 +149,31 @@ public class PanneauPraticiens extends Parent {
     }
     public static void rafraichir() throws ConnexionException {
         ObservableList<Praticien> praticiens = FXCollections.observableArrayList(ModeleGsbRv.getPraticiensHesitants());
-        if (getCritereTri() == CRITERE_COEF_CONFIANCE){
-            praticiens.clear();
-            praticiens.sort(new ComparateurCoefConfiance());
+        if (getCritereTri() == 1){
+            TableView<Praticien> tabPraticiens = new TableView<>();
+            TableColumn<Praticien, Integer> colNumero = new TableColumn<Praticien, Integer>("Numéro");
+            TableColumn<Praticien, String> colNom = new TableColumn<Praticien, String>("Nom");
+            TableColumn<Praticien, String> colVille = new TableColumn<Praticien, String>("Ville");
+
+            colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+            colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+            colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
+
+            tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+            tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
+            Collections.sort(praticiens, new ComparateurCoefConfiance());
             setCritereTri(CRITERE_COEF_CONFIANCE);
         }
-        else if (getCritereTri() == CRITERE_COEF_NOTORIETE){
+        else if (getCritereTri() == 2){
             praticiens.clear();
-            praticiens.sort(new ComparateurCoefNotoriete());
+            Collections.sort(praticiens, new ComparateurCoefNotoriete());
             Collections.reverse(praticiens);
             setCritereTri(CRITERE_COEF_NOTORIETE);
         }
-        else if (getCritereTri() == CRITERE_DATE_VISITE){
+        else if (getCritereTri() == 3){
             praticiens.clear();
-            praticiens.sort(new ComparateurDateVisite());
+            Collections.sort(praticiens, new ComparateurDateVisite());
             Collections.reverse(praticiens);
             setCritereTri(CRITERE_DATE_VISITE);
         }
