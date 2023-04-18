@@ -1,5 +1,14 @@
 package fr.gsb.gsbrvdr;
 
+import fr.gsb.gsbrvdr.Praticien;
+import fr.gsb.gsbrvdr.RapportVisite;
+import fr.gsb.gsbrvdr.Visiteur;
+import fr.gsb.gsbrvdr.ConnexionBD;
+import fr.gsb.gsbrvdr.ConnexionException;
+import fr.gsb.gsbrvdr.Session;
+import fr.gsb.gsbrvdr.ComparateurCoefConfiance;
+import fr.gsb.gsbrvdr.ComparateurCoefNotoriete;
+import fr.gsb.gsbrvdr.ComparateurDateVisite;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,8 +23,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import fr.gsb.gsbrvdr.ModeleGsbRv;
 import javafx.util.Pair;
-
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -27,7 +34,6 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException, ConnexionException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
-        // Variable de session fermée
         Session session1 = new Session(false);
 
         // Barre de Menu ----------------------
@@ -132,8 +138,10 @@ public class HelloApplication extends Application {
         itemConsulter.setOnAction(
                 new EventHandler<ActionEvent>(){
                     @Override
-                    public void handle( ActionEvent event ){
-                        borderPane.setCenter(PanneauRapports.addVbox());
+                    public void handle( ActionEvent event ) {
+                        System.out.println("clic");
+
+
                     }
                 }
         );

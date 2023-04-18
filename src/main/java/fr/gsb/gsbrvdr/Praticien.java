@@ -11,6 +11,11 @@ public class Praticien {
     protected Double coefNotoriete;
     protected LocalDate dateDerniereVisite;
     protected int dernierCoefConfiance;
+    protected String adresse;
+    protected String codePostal;
+
+
+
 
     public Praticien(String numero, String nom, String prenom, String ville, Double coefNotoriete,
                      LocalDate dateDerniereVisite, int dernierCoefConfiance) {
@@ -23,10 +28,15 @@ public class Praticien {
         this.coefNotoriete = coefNotoriete;
         this.dateDerniereVisite = dateDerniereVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
+        this.adresse = adresse;
+        this.codePostal = codePostal;
     }
 
     public Praticien (){
 
+    }
+
+    public Praticien(String praNum, String praNom, String praPrenom, String praVille, double praCoefnotoriete, LocalDate dateDerniereVisite, int rapCoefConfiance, String praAdresse, String praCp) {
     }
 
     public String getNumero() {
@@ -84,6 +94,21 @@ public class Praticien {
     public void setDernierCoefConfiance(int dernierCoefConfiance) {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
+    }
 
     @Override
     public String toString() {
@@ -95,6 +120,8 @@ public class Praticien {
                 ", coefNotoriete=" + coefNotoriete +
                 ", dateDerniereVisite=" + dateDerniereVisite +
                 ", dernierCoefConfiance=" + dernierCoefConfiance +
+                ", adresse='" + adresse + '\'' +
+                ", codePostal='" + codePostal + '\'' +
                 '}';
-    }
-}
+    }}
+

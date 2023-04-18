@@ -66,10 +66,6 @@ public class VueConnexion extends Dialog<Pair<String,String>> {
 
 }
 
-
-
-
-
      /*setResultConverter(
                 new Callback<ButtonType, Pair<String, String>>() {
                     @Override

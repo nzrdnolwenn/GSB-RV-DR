@@ -32,6 +32,10 @@ public class Visiteur {
 
     }
 
+    public Visiteur(String visMatricule, String visNom, String visPrenom) {
+    }
+
+
     public String getVis_matricule() {
         return vis_matricule;
     }
@@ -126,5 +130,16 @@ public class Visiteur {
                 ", lab_code='" + lab_code + '\'' +
                 ", vis_mdp='" + vis_mdp + '\'' +
                 '}';
+    }
+
+    public String toStringForPraticien() {
+        return vis_nom + " " + vis_prenom + " (" + vis_matricule + ") ";
+    }
+
+    public void set(Visiteur visi) {
+        this.vis_matricule = visi.getVis_matricule();
+        this.vis_nom = visi.getVis_nom();
+        this.vis_prenom = visi.getVis_prenom();
+
     }
 }
