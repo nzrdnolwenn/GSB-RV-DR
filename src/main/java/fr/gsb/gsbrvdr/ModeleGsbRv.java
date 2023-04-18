@@ -76,38 +76,46 @@ public class ModeleGsbRv {
     }
 
 
-    public static List<Visiteur> getVisiteurs() throws ConnexionException {
 
-        List<Visiteur> visiteur = new ArrayList<>();
+
+
+    public static List<Visiteur> getVisiteurs() throws ConnexionException {
 
         Connection connexion = ConnexionBD.getConnexion() ;
 
-        String req
-                = "SELECT vis_matricule, vis_nom, vis_prenom "
-                + "FROM Visiteur ";
+        String requete ="select vis_matricule, vis_nom, vis_prenom" +
+                " from Visiteur;";
 
-        try{
-            PreparedStatement requetePreparee = connexion.prepareStatement(req);
-            ResultSet resultat = requetePreparee.executeQuery();
-            while(resultat.next()){
-                visiteur.add(new Visiteur(
-                        resultat.getString("vis_matricule"),
-                        resultat.getString("vis_nom"),
-                        resultat.getString("vis_prenom")
-                ));
+        try {
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
+
+
+            System.out.println( requetePreparee.toString() ) ;
+
+            List<Visiteur> visiteurs = new ArrayList<Visiteur>() ;
+
+            ResultSet resultat = requetePreparee.executeQuery() ;
+
+            //System.out.println( "1" ) ;
+
+            while ( resultat.next() ){
+                Visiteur visiteur = new Visiteur() ;
+                visiteur.setVis_matricule( resultat.getString( "vis_matricule" ) );
+                visiteur.setVis_nom( resultat.getString("vis_nom") );
+                visiteur.setVis_prenom( resultat.getString("vis_prenom") );
+
+                visiteurs.add(visiteur);
             }
-            return visiteur;
-        }catch(Exception e){
-
-            System.out.println("BALISE ERREUR REQUETE PREP " + e.getMessage());
-
+            requetePreparee.close() ;
+            return visiteurs ;
         }
 
-        return null;
+        catch( Exception e ){
+            System.out.println( "Pb connexion BD" ) ;
+            return null ;
+        }
+
     }
-
-
-
 
     public static List<RapportVisite> getRapportsVisite(String matricule, int mois, int annee) throws ConnexionException {
 
@@ -146,6 +154,7 @@ public class ModeleGsbRv {
                 rapportVisite.setMotif( resultat.getString( "rap_motif" ) );
                 rapportVisite.setLu( resultat.getBoolean( "rap_lu" ) );
 
+
                 Praticien praticien = new Praticien() ;
                 praticien.setNumero( resultat.getString( "pra_num" ) );
                 praticien.setNom( resultat.getString("pra_nom") );
@@ -171,8 +180,6 @@ public class ModeleGsbRv {
         }
 
     }
-
-
 
 
     public static boolean setRapportVisiteLu(String visMatricule, int rapNum) throws ConnexionException{

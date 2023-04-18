@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -51,13 +52,14 @@ public class HelloApplication extends Application {
         MenuItem itemConsulter = new MenuItem("Consulter");
         menuRapports.getItems().add(itemConsulter);
 
-        Menu menuPracticiens = new Menu("Practiciens");
+        Menu menuPraticiens = new Menu("Practiciens");
         MenuItem itemHesitants = new MenuItem("Hésitants");
-        menuPracticiens.getItems().add(itemHesitants);
+        menuPraticiens.getItems().add(itemHesitants);
+
 
         barreMenus.getMenus().add(menuFichier);
         barreMenus.getMenus().add(menuRapports);
-        barreMenus.getMenus().add(menuPracticiens);
+        barreMenus.getMenus().add(menuPraticiens);
 
         // Ajout des éléments ----------------------
 
@@ -65,6 +67,9 @@ public class HelloApplication extends Application {
         borderPane.setTop(barreMenus);
         borderPane.setCenter(PanneauAcceuil.addVbox());
         borderPane.setStyle("-fx-background-color : white");
+
+        PanneauRapports vueRapport = new PanneauRapports();
+
         // Mise en place de la scène --------------------
 
         Scene scene = new Scene(borderPane, 620, 540);
@@ -86,11 +91,10 @@ public class HelloApplication extends Application {
         }*/
 
 
-
         itemQuitter.setOnAction(
-                new EventHandler<ActionEvent>(){
+                new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle( ActionEvent event ){
+                    public void handle(ActionEvent event) {
                         Alert alertQuitter = new Alert(Alert.AlertType.CONFIRMATION);
                         alertQuitter.setTitle("Quitter");
                         alertQuitter.setHeaderText("Demande de confirmation");
@@ -102,7 +106,7 @@ public class HelloApplication extends Application {
                         alertQuitter.getButtonTypes().setAll(btnOui, btnNon);
                         Optional<ButtonType> reponse = alertQuitter.showAndWait();
                         System.out.println(reponse.get().getButtonData());
-                        if (reponse.get().getButtonData() == ButtonBar.ButtonData.OK_DONE){
+                        if (reponse.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             Platform.exit();
                         }
                     }
@@ -110,9 +114,9 @@ public class HelloApplication extends Application {
         );
 
         itemSeConnecter.setOnAction(
-                new EventHandler<ActionEvent>(){
+                new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle( ActionEvent event ){
+                    public void handle(ActionEvent event) {
                         try {
                             VueConnexion vue = new VueConnexion();
                         } catch (ConnexionException e) {
@@ -125,9 +129,9 @@ public class HelloApplication extends Application {
         );
 
         itemSeDeconnecter.setOnAction(
-                new EventHandler<ActionEvent>(){
+                new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle( ActionEvent event ){
+                    public void handle(ActionEvent event) {
                         session1.setEtatSession(false);
                         stage.setTitle("GSB-RV-DR");
                         System.out.println(session1);
@@ -136,20 +140,22 @@ public class HelloApplication extends Application {
         );
 
         itemConsulter.setOnAction(
-                new EventHandler<ActionEvent>(){
+                new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle( ActionEvent event ) {
-                        System.out.println("clic");
-
-
+                    public void handle(ActionEvent event) {
+                        try {
+                            borderPane.setCenter(PanneauRapports.addVbox());
+                        } catch (ConnexionException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
         );
 
         itemHesitants.setOnAction(
-                new EventHandler<ActionEvent>(){
+                new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle( ActionEvent event ){
+                    public void handle(ActionEvent event) {
                         try {
                             borderPane.setCenter(PanneauPraticiens.addVbox());
                         } catch (ConnexionException e) {
@@ -159,7 +165,10 @@ public class HelloApplication extends Application {
                 }
         );
         System.out.println(session1);
+
+
     }
+
 
     public static void main(String[] args) throws ConnexionException {
         try {
